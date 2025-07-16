@@ -1,6 +1,7 @@
 <x-layouts.app :title="__('Tambah Produk')">
     <h1 class="text-2xl font-bold mb-4">Tambah Produk</h1>
 
+    {{-- Pesan Kesalahan --}}
     @if(session('errorMessage'))
         <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
             {{ session('errorMessage') }}
@@ -17,6 +18,7 @@
         </div>
     @endif
 
+    {{-- Form Tambah Produk --}}
     <form method="POST" action="{{ route('product1.store') }}">
         @csrf
 
@@ -59,7 +61,7 @@
         {{-- Dropdown Brand --}}
         <div class="mb-4">
             <label class="block font-semibold">Brand</label>
-            <select name="brand_id" class="border rounded w-full p-2" required>
+            <select name="brand_id" class="border rounded w-full p-2 bg-white font-medium text-gray-800" required>
                 <option value="">-- Pilih Brand --</option>
                 @foreach($brands as $brand)
                     <option value="{{ $brand->id }}" {{ old('brand_id') == $brand->id ? 'selected' : '' }}>
@@ -73,7 +75,7 @@
         {{-- Dropdown OS Type --}}
         <div class="mb-4">
             <label class="block font-semibold">OS Type</label>
-            <select name="os_type_id" class="border rounded w-full p-2" required>
+            <select name="os_type_id" class="border rounded w-full p-2 bg-white font-medium text-gray-800" required>
                 <option value="">-- Pilih OS --</option>
                 @foreach($osTypes as $os)
                     <option value="{{ $os->id }}" {{ old('os_type_id') == $os->id ? 'selected' : '' }}>
@@ -94,6 +96,7 @@
             @error('is_active') <p class="text-red-600 text-sm">{{ $message }}</p> @enderror
         </div>
 
+        {{-- Tombol --}}
         <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Simpan</button>
         <a href="{{ route('product1.index') }}" class="ml-3 text-gray-600 hover:underline">Batal</a>
     </form>

@@ -8,7 +8,11 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $products = Product::with(['brand', 'osType'])->latest()->take(8)->get();
-        return view('home', compact('products'));
+        $featuredProducts = Product::where('is_active', true)
+            ->latest()
+            ->take(8)
+            ->get();
+
+        return view('home', compact('featuredProducts'));
     }
 }
