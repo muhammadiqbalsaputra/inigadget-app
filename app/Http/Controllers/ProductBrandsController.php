@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Brand;
+use Illuminate\Support\Facades\Http;
 
 class ProductBrandsController extends Controller
 {
@@ -101,4 +102,26 @@ class ProductBrandsController extends Controller
 
         return redirect()->back()->with('successMessage', 'Data berhasil dihapus.');
     }
+
+    public function sync($id, Request $request)
+      {
+          $brand = brand::findOrFail($id);
+          
+          $response = Http::post('https://api.phb-umkm.my.id/api/product-category/sync', [
+              'client_id' => env('CLIENT_ID'),
+              'client_secret' => env('CLIENT_SECRET'),
+              'seller_product_category_id' => (string) $brand->id,
+              'name' => $brand->name,
+              'description' => $brand->description,
+              'is_active' => $request->is_active == 1 ? false : true,
+          ]);
+  
+          if ($response->successful() && isset($response['product_category_id'])) {
+              $brand->hub_category_id = $request->is_active == 1 ? null : $response['product_category_id'];
+              $brand->save();
+          }
+  
+          session()->flash('successMessage', 'Category Synced Successfully');
+          return redirect()->back();
+      }
 }

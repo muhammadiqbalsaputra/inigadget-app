@@ -1,5 +1,6 @@
 <x-layouts.app :title="__('Brands')">
     @push('head')
+
         <!-- Alpine.js -->
         <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
         <!-- Google Fonts -->
@@ -43,25 +44,21 @@
             <thead class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white uppercase text-xs tracking-wider">
                 <tr>
                     <th class="px-6 py-3">ID</th>
+                    <th class="px-6 py-3">Gambar</th> <!-- Dipindahkan -->
                     <th class="px-6 py-3">Nama</th>
                     <th class="px-6 py-3">Deskripsi</th>
-                    <th class="px-6 py-3">Gambar</th>
+                    <th class="px-6 py-3">On/Off</th>
                     <th class="px-6 py-3">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
                 @foreach($brand as $key => $item)
-                    <tr class="{{ $loop->odd ? 'bg-gray-50' : 'bg-white' }} hover:bg-purple-50 transition duration-150">
+                    <tr class="{{ $loop->odd ? 'bg-gray-50' : 'bg-white' }} hover:bg-purple-500 transition duration-150">
                         <td class="px-6 py-4 font-medium text-gray-700">
                             {{ $brand->firstItem() + $key }}
                         </td>
-                        <td class="px-6 py-4 font-semibold text-indigo-700">
-                            {{ $item->name }}
-                        </td>
-                        <td class="px-6 py-4 text-gray-600 max-w-sm truncate">
-                            {{ \Illuminate\Support\Str::limit($item->description, 100) }}
-                        </td>
-                        <td class="px-6 py-4">
+
+                        <td class="px-6 py-4"> <!-- Gambar dipindahkan ke sini -->
                             @if($item->image_url)
                                 <img src="{{ $item->image_url }}" alt="{{ $item->name }}"
                                     class="w-12 h-12 rounded object-cover border shadow">
@@ -69,9 +66,30 @@
                                 <span class="inline-block bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded">N/A</span>
                             @endif
                         </td>
+
+                        <td class="px-6 py-4 font-semibold text-indigo-700">
+                            {{ $item->name }}
+                        </td>
+
+                        <td class="px-6 py-4 text-gray-600 max-w-sm truncate">
+                            {{ \Illuminate\Support\Str::limit($item->description, 100) }}
+                        </td>
+
+                        <td class="">
+                            <form id="sync-category-{{ $item->id }}" action="{{ route('category.sync', $item->id) }}"
+                                method="POST">
+                                @csrf
+                                <input type="hidden" name="is_active" value="{{ $item->hub_category_id ? 1 : 0 }}">
+                                <input type="checkbox" {{ $item->hub_category_id ? 'checked' : '' }}
+                                    class="w-6 h-6 rounded-full border {{ $item->hub_category_id ? 'bg-green-500 border-green-600' : 'bg-red-500 border-red-600' }}"
+                                    onchange="document.getElementById('sync-category-{{ $item->id }}').submit()" />
+
+                            </form>
+                        </td>
+
                         <td class="px-6 py-4 relative text-sm" x-data="{ open: false }">
                             <button @click="open = !open"
-                                class="p-1 bg-gray-100 rounded hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-400">
+                                class="p-1 bg-gray-100 rounded hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400">
                                 <svg class="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
                                     <path
                                         d="M6 10a2 2 0 114 0 2 2 0 01-4 0zm7-2a2 2 0 100 4 2 2 0 000-4zm-7 4a2 2 0 110-4 2 2 0 010 4z" />

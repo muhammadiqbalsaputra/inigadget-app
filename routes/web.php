@@ -56,6 +56,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
     Route::resource('brand', ProductBrandsController::class);
     Route::resource('product1', Product1Controller::class);
     Route::resource('ostype', controller: ProductOstypeController::class);
+    Route::post('products/sync/{id}', [Product1Controller::class, 'sync'])->name('products.sync');
+    Route::post('category/sync/{id}', [ProductBrandsController::class, 'sync'])->name('category.sync');
 });
 
 // untuk dashboard dan pengaturan

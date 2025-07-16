@@ -7,6 +7,8 @@ use App\Models\Product1;
 use App\Models\Brand;
 use App\Models\OsType;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
+
 
 class Product1Controller extends Controller
 {
@@ -75,7 +77,7 @@ class Product1Controller extends Controller
             'brands' => $brands,
             'osTypes' => $osTypes,
         ]);
-        
+
     }
 
     public function update(Request $request, string $id)
@@ -112,5 +114,33 @@ class Product1Controller extends Controller
         $product1->delete();
 
         return redirect()->route('product1.index')->with('successMessage', 'Produk berhasil dihapus.');
+    }
+
+    public function sync($id, Request $request)
+    {
+        $product = Product1::findOrFail($id);
+
+        $response = Http::post('https://api.phb-umkm.my.id/api/product/sync', [
+            'client_id' => env('CLIENT_ID'),
+            'client_secret' => env('CLIENT_SECRET'),
+            'seller_product_id' => (string) $product->id,
+            'name' => $product->name,
+            'description' => $product->description,
+            'price' => $product->price,
+            'stock' => $product->stock,
+            'sku' => $product->sku,
+            'image_url' => $product->image_url,
+            'weight' => $product->weight,
+            'is_active' => $request->is_active == 1 ? false : true,
+            'category_id' => (string) $product->brand->hub_category_id,
+        ]);
+
+        if ($response->successful() && isset($response['product_id'])) {
+            $product->hub_product_id = $request->is_active == 1 ? null : $response['product_id'];
+            $product->save();
+        }
+
+        session()->flash('successMessage', 'Product Synced Successfully');
+        return redirect()->back();
     }
 }
