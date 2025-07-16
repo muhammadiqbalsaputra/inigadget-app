@@ -19,7 +19,7 @@ use App\Http\Controllers\ProductOstypeController;
 */
 
 // --- RUTE PUBLIK (BISA DIAKSES SEMUA ORANG) ---
-// INI ADALAH RUTE UNTUK HALAMAN UTAMA ANDA
+// INI ADALAH RUTE UNTUK HALAMAN UTAMA ANDA.
 Route::get('/', [PageController::class, 'home'])->name('home');
 
 Route::get('/products', [ProductController::class, 'index'])->name('products');
