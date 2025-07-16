@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product; // <--- PASTIKAN INI ADA
+use App\Models\Product; 
+use App\Models\Brand;
+use App\Models\OsType;
 use Illuminate\Http\Request;
-use \App\Models\Brand;
-use \App\Models\OsType;
 
 class PageController extends Controller
 {
@@ -14,11 +14,15 @@ class PageController extends Controller
         // Ambil 8 produk terbaru untuk ditampilkan di halaman utama
         $featuredProducts = Product::latest()->take(8)->get();
 
-        // Kirim data ke view dengan nama variabel 'featuredProducts'
-        return view('pages.home', compact('featuredProducts'));
+        // Ambil semua data Brand dan OS Type untuk ditampilkan di homepage
+        $brands = Brand::all();
+        $osTypes = OsType::all();
+
+        // Kirim data ke view 'pages.home' dengan nama variabel yang sesuai
+        return view('pages.home', compact('featuredProducts', 'brands', 'osTypes'));
     }
 
-     public function categories()
+    public function categories()
     {
         $brands = Brand::all();
         $osTypes = OsType::all();
@@ -30,5 +34,3 @@ class PageController extends Controller
         return view('pages.about');
     }
 }
-
-

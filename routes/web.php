@@ -52,10 +52,10 @@ Route::middleware([CheckCustomer::class])->group(function () {
 // --- RUTE UNTUK DASHBOARD ---
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], function () {
-   Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-   Route::resource('brand', ProductBrandsController::class);
-   Route::resource('product1', Product1Controller::class);
-   Route::resource('ostype', controller: ProductOstypeController::class);
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('brand', ProductBrandsController::class);
+    Route::resource('product1', Product1Controller::class);
+    Route::resource('ostype', controller: ProductOstypeController::class);
 });
 
 // untuk dashboard dan pengaturan
