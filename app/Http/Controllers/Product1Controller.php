@@ -28,11 +28,11 @@ class Product1Controller extends Controller
     public function create()
     {
         $brands = Brand::all();
-        $osTypes = OsType::all(); // ← pastikan variabel ini bernama osTypes
+        $osTypes = OsType::all();
 
         return view('dashboard.product1.create', [
             'brands' => $brands,
-            'osTypes' => $osTypes, // ← kirim dengan nama yang sama seperti di view
+            'osTypes' => $osTypes,
         ]);
     }
 
