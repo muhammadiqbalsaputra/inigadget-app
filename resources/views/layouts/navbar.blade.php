@@ -26,7 +26,7 @@
             @endforeach
         </nav>
 
-        {{-- Right side of Desktop Navigation --}}
+        {{-- Desktop Right --}}
         <div class="hidden md:flex items-center space-x-4">
             @if (session('customer'))
                 {{-- Cart Icon --}}
@@ -41,12 +41,17 @@
                     @endif
                 </a>
 
-                {{-- User Dropdown Menu --}}
+                {{-- User Dropdown --}}
                 <div class="relative">
                     <button id="userDropdownButton" class="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-blue-50 transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A4.992 4.992 0 0112 15a4.992 4.992 0 016.879 2.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M5.121 17.804A4.992 4.992 0 0112 15a4.992 4.992 0 016.879 2.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
                         <span class="text-sm font-semibold text-gray-700">{{ Str::limit(session('customer')->name, 10) }}</span>
-                        <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.5 7l4.5 4.5L14.5 7H5.5z" clip-rule="evenodd" /></svg>
+                        <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.5 7l4.5 4.5L14.5 7H5.5z" clip-rule="evenodd"/>
+                        </svg>
                     </button>
                     <div id="userDropdownMenu" class="hidden absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-50">
                         <form action="{{ route('customer.logout') }}" method="POST">
@@ -56,35 +61,41 @@
                     </div>
                 </div>
             @else
-                <a href="{{ route('customer.login') }}" class="px-4 py-2 text-sm font-semibold text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition">Login</a>
-                <a href="{{ route('customer.register') }}" class="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded hover:bg-blue-700 transition">Register</a>
+                <a href="{{ route('customer.login') }}"
+                   class="px-4 py-2 text-sm font-semibold text-blue-600 border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition">Login</a>
+                <a href="{{ route('customer.register') }}"
+                   class="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded hover:bg-blue-700 transition">Register</a>
             @endif
         </div>
 
-        {{-- Mobile Menu Button --}}
-        <button class="md:hidden text-gray-700 focus:outline-none" id="mobile-menu-toggle">
-            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+        {{-- Mobile Button --}}
+        <button class="md:hidden text-gray-700 focus:outline-none" id="mobile-menu-toggle" aria-controls="mobile-menu" aria-expanded="false">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
         </button>
     </div>
 
-    {{-- ======================================================= --}}
-    {{--          MOBILE MENU DENGAN ANIMASI                     --}}
-    {{-- ======================================================= --}}
-    <div id="mobile-menu" 
-         class="md:hidden bg-white border-t overflow-hidden transition-all duration-300 ease-in-out max-h-0 opacity-0">
+    {{-- Mobile Menu --}}
+    <div id="mobile-menu" class="md:hidden bg-white border-t overflow-hidden transition-all duration-300 ease-in-out max-h-0 opacity-0">
         <div class="px-4 pb-4 space-y-1">
             @foreach ($navLinks as $link)
-                <a href="{{ route($link['route']) }}" class="block py-2 px-3 rounded-lg transition hover:bg-blue-100 hover:text-blue-700 {{ request()->is($link['url']) ? 'font-bold text-blue-600 bg-blue-50' : '' }}">
+                <a href="{{ route($link['route']) }}"
+                   class="block py-2 px-3 rounded-lg transition hover:bg-blue-100 hover:text-blue-700
+                   {{ request()->is($link['url']) ? 'font-bold text-blue-600 bg-blue-50' : '' }}">
                     {{ $link['name'] }}
                 </a>
             @endforeach
-            
+
             <div class="border-t pt-4 mt-2 space-y-2">
                 @if (session('customer'))
-                    <a href="{{ route('cart.index') }}" class="flex justify-between items-center py-2 px-3 rounded-lg transition hover:bg-blue-100 hover:text-blue-700">
+                    <a href="{{ route('cart.index') }}"
+                       class="flex justify-between items-center py-2 px-3 rounded-lg transition hover:bg-blue-100 hover:text-blue-700">
                         <span>Keranjang Belanja</span>
                         @if(session('cart') && count(session('cart')) > 0)
-                            <span class="bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">{{ count(session('cart')) }}</span>
+                            <span class="bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
+                                {{ count(session('cart')) }}
+                            </span>
                         @endif
                     </a>
                     <div class="flex justify-between items-center px-3 py-2">
@@ -109,9 +120,7 @@
         </div>
     </div>
 
-    {{-- ======================================================= --}}
-    {{--          SCRIPTS DENGAN LOGIKA ANIMASI                  --}}
-    {{-- ======================================================= --}}
+    {{-- Scripts --}}
     <script>
         const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -120,15 +129,12 @@
 
         if (mobileMenuToggle) {
             mobileMenuToggle.addEventListener('click', function () {
-                // Cek apakah menu sedang terbuka atau tertutup
                 const isOpen = mobileMenu.classList.contains('max-h-screen');
 
                 if (isOpen) {
-                    // Jika terbuka, tutup menu
                     mobileMenu.classList.remove('max-h-screen', 'opacity-100', 'py-4');
                     mobileMenu.classList.add('max-h-0', 'opacity-0');
                 } else {
-                    // Jika tertutup, buka menu
                     mobileMenu.classList.remove('max-h-0', 'opacity-0');
                     mobileMenu.classList.add('max-h-screen', 'opacity-100', 'py-4');
                 }
@@ -138,9 +144,7 @@
         if (dropdownBtn) {
             dropdownBtn.addEventListener('click', function (e) {
                 e.stopPropagation();
-                if (dropdownMenu) {
-                    dropdownMenu.classList.toggle('hidden');
-                }
+                dropdownMenu.classList.toggle('hidden');
             });
         }
 

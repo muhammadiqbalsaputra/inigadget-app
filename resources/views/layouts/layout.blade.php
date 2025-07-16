@@ -3,22 +3,25 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Penting untuk responsive -->
     <title>@yield('title', 'Inigadget')</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
-<body class="bg-gray-100 text-gray-800">
+<body class="bg-gray-100 text-gray-800 flex flex-col min-h-screen">
 
+    {{-- Navbar --}}
     @include('layouts.navbar')
 
-    <main class="py-8">
-        <div class="max-w-7xl mx-auto px-6">
+    {{-- Main content --}}
+    <main class="flex-grow py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             @yield('content')
         </div>
     </main>
 
+    {{-- Footer --}}
     @include('layouts.footer')
 
 </body>
-
 </html>
